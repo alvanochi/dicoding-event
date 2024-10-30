@@ -4,14 +4,15 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dicoding.submissionfundamental1.data.response.EventResponse
-import com.dicoding.submissionfundamental1.data.response.ListEventsItem
-import com.dicoding.submissionfundamental1.data.retrofit.ApiConfig
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import androidx.lifecycle.viewModelScope
+import com.dicoding.submissionfundamental1.data.remote.response.ListEventsItem
+import com.dicoding.submissionfundamental1.data.remote.retrofit.ApiConfig
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel: ViewModel() {
+
 
     private val _upcomingEvent = MutableLiveData<List<ListEventsItem>>()
     val upcomingEvent: LiveData<List<ListEventsItem>> = _upcomingEvent
@@ -26,39 +27,32 @@ class HomeViewModel : ViewModel() {
 
 
     private fun showFinishedEvent(){
-        val client = ApiConfig.getApiService().getFinishedEvent(limit = 5)
-        client.enqueue(object: Callback<EventResponse> {
-            override fun onResponse(call: Call<EventResponse>, response: Response<EventResponse>) {
-                if (response.isSuccessful){
-                    _finishedEvent.value = response.body()?.listEvents
-
-                }else {
-                    Log.e("HomeFrg", "onFailure: ${response.message()}")
+        viewModelScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    ApiConfig.getApiService().getFinishedEvent(limit = 5)
                 }
-            }
 
-            override fun onFailure(call: Call<EventResponse>, t: Throwable) {
-                Log.e("HomeFrg", "onFailure: ${t.message.toString()}")
+                _finishedEvent.value = response.listEvents
+
+            } catch (e: Exception){
+                Log.e("catch", "HTTP error: ${e.message}")
             }
-        })
+        }
     }
 
     private fun showUpcomingEvent(){
-        val client = ApiConfig.getApiService().getUpcomingEvent(limit = 5)
-        client.enqueue(object: Callback<EventResponse> {
-            override fun onResponse(call: Call<EventResponse>, response: Response<EventResponse>) {
-                if (response.isSuccessful){
-                    _upcomingEvent.value = response.body()?.listEvents
-
-                }else {
-                    Log.e("HomeFrg", "onFailure: ${response.message()}")
+        viewModelScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    ApiConfig.getApiService().getUpcomingEvent()
                 }
-            }
 
-            override fun onFailure(call: Call<EventResponse>, t: Throwable) {
-                Log.e("HomeFrg", "onFailure: ${t.message.toString()}")
+                _upcomingEvent.value = response.listEvents
 
+            } catch (e: Exception){
+                Log.e("catch", "HTTP error: ${e.message}")
             }
-        })
+        }
     }
 }

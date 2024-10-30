@@ -2,7 +2,6 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
     <fragment
@@ -20,5 +19,16 @@
         android:name="com.dicoding.submissionfundamental1.ui.finished.FinishedFragment"
         android:label="@string/title_finished_event"
         tools:layout="@layout/fragment_finished" />
+    <fragment
+        android:id="@+id/navigation_favorite"
+        android:name="com.dicoding.submissionfundamental1.ui.favorite.FavoriteFragment"
+        android:label="@string/title_favorite_event"
+        tools:layout="@layout/fragment_favorite" />
+    <fragment
+        android:id="@+id/navigation_setting"
+        android:name="com.dicoding.submissionfundamental1.ui.setting.SettingFragment"
+        android:label="@string/title_setting"
+        tools:layout="@layout/fragment_setting"
+        />
 
 </navigation>

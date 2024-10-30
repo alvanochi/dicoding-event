@@ -6,19 +6,21 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="12dp"
     android:layout_margin="8dp"
+    app:cardElevation="4dp"
     >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/gray"
+        android:padding="12dp"
         >
         <ImageView
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:id="@+id/img_finished"
             android:src="@drawable/img_logo"
-            android:layout_margin="12dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="12dp"
             android:contentDescription="@string/title_finished_event"
             />
         <LinearLayout
@@ -28,19 +30,20 @@
             android:layout_gravity="center"
             >
             <TextView
+                android:id="@+id/tv_home_owner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_home_finished"
-                android:textColor="@color/black"
-                android:text="@string/title_finished_event"
+                android:textColor="@color/text_responsive"
+                android:text="@string/tv_owner_name"
                 />
             <TextView
+                android:id="@+id/tv_home_finished"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_home_summary"
-                 android:layout_marginTop="12dp"
-                android:text="@string/tv_upcoming_event"
+                android:layout_marginTop="12dp"
+                android:text="@string/title_finished_event"
                 />
+
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

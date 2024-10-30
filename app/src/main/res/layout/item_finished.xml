@@ -14,17 +14,17 @@
         android:orientation="vertical"
         >
         <ImageView
+            android:id="@+id/img_finished"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:id="@+id/img_finished"
             android:scaleType="centerCrop"
             android:src="@drawable/img_event"
             android:contentDescription="@string/title_finished_event"
             />
         <TextView
+            android:id="@+id/tv_finished"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_finished"
             android:text="@string/tv_upcoming_event"
             android:padding="12dp"
             />

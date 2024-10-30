@@ -1,18 +1,25 @@
 package com.dicoding.submissionfundamental1.ui
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.dicoding.submissionfundamental1.R
+import com.dicoding.submissionfundamental1.ViewModelFactory
 import com.dicoding.submissionfundamental1.databinding.ActivityMainBinding
+import com.dicoding.submissionfundamental1.ui.setting.SettingPreferences
+import com.dicoding.submissionfundamental1.ui.setting.SettingViewModel
+import com.dicoding.submissionfundamental1.ui.setting.dataStore
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var settingViewModel: SettingViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,12 +34,26 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_upcoming, R.id.navigation_finished
+                R.id.navigation_home, R.id.navigation_upcoming, R.id.navigation_finished, R.id.navigation_favorite, R.id.navigation_setting
             )
         )
 
 
+        val pref = SettingPreferences.getInstance(dataStore)
+        settingViewModel = ViewModelProvider(this, ViewModelFactory(null, pref))[SettingViewModel::class.java]
+
+
+        settingViewModel.getThemeSettings().observe(this) { isDarkModeActive: Boolean ->
+            if (isDarkModeActive) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        }
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
+
+
 }

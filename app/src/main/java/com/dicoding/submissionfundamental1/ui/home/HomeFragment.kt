@@ -6,17 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dicoding.submissionfundamental1.data.response.ListEventsItem
+import com.dicoding.submissionfundamental1.data.remote.response.ListEventsItem
 import com.dicoding.submissionfundamental1.databinding.FragmentHomeBinding
-import com.dicoding.submissionfundamental1.ui.ListFinishHomeAdapter
-import com.dicoding.submissionfundamental1.ui.ViewPagerAdapter
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val homeViewModel by viewModels<HomeViewModel>()
+
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -27,16 +25,10 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        homeViewModel.finishedEvent.observe(viewLifecycleOwner){
-            setEventData(it)
-            binding.progressBar.visibility = View.INVISIBLE
-        }
+
 
         return root
     }
@@ -45,6 +37,14 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+
+
+
+
+        homeViewModel.finishedEvent.observe(viewLifecycleOwner){ events ->
+            setEventData(events)
+            binding.progressBarFinished.visibility = View.INVISIBLE
+        }
 
         val viewPagerAdapter = ViewPagerAdapter()
         binding.viewPagerUpcoming.adapter = viewPagerAdapter
@@ -55,6 +55,8 @@ class HomeFragment : Fragment() {
 
         homeViewModel.upcomingEvent.observe(viewLifecycleOwner) { events ->
             viewPagerAdapter.submitList(events)
+            binding.progressBarUpcoming.visibility = View.INVISIBLE
+
         }
 
         binding.rvHomeFinished.layoutManager = LinearLayoutManager(requireContext())

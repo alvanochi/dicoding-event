@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.dicoding.submissionfundamental1.data.response.ListEventsItem
+import com.dicoding.submissionfundamental1.data.remote.response.ListEventsItem
 import com.dicoding.submissionfundamental1.databinding.FragmentFinishedBinding
-import com.dicoding.submissionfundamental1.ui.ListFinishedAdapter
+import kotlinx.coroutines.launch
 
 class FinishedFragment : Fragment() {
 
@@ -47,6 +47,7 @@ class FinishedFragment : Fragment() {
 
 
 
+
         return root
     }
 
@@ -70,8 +71,10 @@ class FinishedFragment : Fragment() {
     }
 
     private fun filter(query: String?){
-        if(query != null){
-            finishedViewModel.showFilter(query)
+        finishedViewModel.viewModelScope.launch {
+            if(!query.isNullOrEmpty()){
+                finishedViewModel.showFilter(query)
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-package com.dicoding.submissionfundamental1.data.response
+package com.dicoding.submissionfundamental1.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 
